@@ -12,8 +12,6 @@ function NoteContent({content, setContent, setIsSaved}) {
         setContent(noteContent);
     };
 
-
-
     return (
             <ContentEditable
                 className={styles.contentEditable}

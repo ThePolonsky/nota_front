@@ -1,6 +1,7 @@
 import styles from './NoteBody.module.css';
 import {useEffect, useState} from 'react';
 import NoteContent from '../NoteContent/NoteContent.jsx';
+import ContentEditable from 'react-contenteditable';
 
 function NoteBody() {
 
@@ -13,6 +14,13 @@ function NoteBody() {
 
     const [isSaved, setIsSaved] = useState(true);
     const [content, setContent] = useState(note.content);
+    const [noteTitle, setNoteTitle] = useState(note.title);
+
+    const handleChange = () => {
+        setIsSaved(false);
+        setNoteTitle(document.getElementById('contentEditable').innerHTML);
+        // setContent(noteContent);
+    };
 
     useEffect(() => {
         let timerId;
@@ -22,12 +30,20 @@ function NoteBody() {
         return () => {
             clearTimeout(timerId);
         };
-    }, [content]);
+    }, [content, noteTitle]);
 
     return (
         <section className={styles.noteBody}>
             <div className={styles.noteBodyHeader}>
-                <span className={styles.noteTitle}>{note.title}</span>
+                <ContentEditable
+                    className={styles.noteTitle}
+                    html={noteTitle}
+                    onChange={handleChange}
+                    tagName="span"
+                />
+                {/*<span */}
+                {/*    className={styles.noteTitle}*/}
+                {/*>{note.title}</span>*/}
                 <div className={styles.noteInfo}>
                     <span>Last update</span>
                     <span>{note.updateDate}</span>
