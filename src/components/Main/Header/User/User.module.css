@@ -1,0 +1,32 @@
+.userBtn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-right: 8px;
+    width: fit-content;
+    height: 32px;
+    padding: 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-hover);
+}
+
+.userBtn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.userAvatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: white;
+}
+
+.userName {
+    font-size: 1.25rem;
+    font-weight: 600;
+}

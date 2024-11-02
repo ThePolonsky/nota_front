@@ -1,0 +1,24 @@
+.leftPanelHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background: linear-gradient(75deg, #00AAFF 0%, #00CC88 100%);
+}
+
+.openPanelBtn {
+    margin-right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.openPanelBtn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}

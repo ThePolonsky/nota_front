@@ -1,0 +1,274 @@
+.AuthBody {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-dark-background);
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    max-height: calc(100vh - 200px);
+    width: 100%;
+    height: 100%;
+    margin: 100px 120px;
+    background: var(--color-dark-module);
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 24px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 48px 12px;
+}
+
+.formContainer {
+    position: absolute;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 66%;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.formContainer h1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 48px;
+}
+
+.formContainer h1 img {
+    width: 120px;
+}
+
+.signInForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.signInFormInput {
+    font-size: 1.2em;
+    font-weight: 600;
+    width: 100%;
+    height: 48px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background: white;
+    padding-left: 20px;
+    color: black;
+    transition: var(--transition-hover);
+}
+
+.signInFormInput:focus {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 8px 4px;
+    scale: 1.05;
+}
+
+.signInFormInput::placeholder {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #808080;
+}
+
+.rememberMe {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin: -8px;
+    height: 2rem;
+}
+
+.rememberMeCheckbox, .termsCheckbox {
+    appearance: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 1.2rem;
+    width: 1.2rem;
+    background: white;
+    border-radius: 5px;
+}
+
+.rememberMeCheckbox:before, .termsCheckbox:before {
+    content: "";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    clip-path: polygon(45% 64%, 84% 14%, 100% 28%, 47% 100%, 0 49%, 15% 32%);
+    background-color: var(--color-green);
+    scale: 0.8;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.rememberMeCheckbox:checked:before, .termsCheckbox:checked:before {
+    opacity: 1;
+}
+
+.terms {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin: -8px;
+    height: 2rem;
+}
+
+.signInForm button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: 600;
+    width: 100%;
+    height: 48px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background: var(--color-green);
+    cursor: pointer;
+    transition: var(--transition-hover);
+}
+
+.signInForm button:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 8px 4px;
+    scale: 1.03;
+    transition: var(--transition-hover);
+}
+
+.signInForm button:focus {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 8px 4px;
+    scale: 1.03;
+}
+
+.signInForm button:active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px 2px;
+    scale: 1;
+    transition: var(--transition-active);
+}
+
+.foreignAuthBlock {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.foreignAuthBlock button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: var(--transition-hover);
+}
+
+.foreignAuthBlock button:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px 4px;
+    scale: 1.1;
+    transition: var(--transition-hover);
+}
+
+.foreignAuthBlock button:active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 5px 2px;
+    scale: 1;
+    transition: var(--transition-active);
+}
+
+.foreignAuthBlock button img {
+    width: 60px;
+}
+
+.foreignAuthBlock button img svg {
+    background: var(--color-green);
+}
+
+.formContainer p {
+    color: white;
+}
+
+.formContainer a {
+    color: white;
+    text-decoration: none;
+    margin-top: 30px;
+    transition: var(--transition-hover);
+}
+
+.formContainer a:hover {
+    text-decoration: underline;
+    scale: 1.1;
+}
+
+.formContainer a:active {
+    scale: 1;
+}
+
+.switchModeContainer {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(60deg, #00AAFF, #00CC88);
+    width: 34%;
+    /*max-width: 400px;*/
+    height: 100%;
+    border-radius: 0 24px 24px 0;
+}
+
+.switchModeButton {
+    position: relative;
+    font-size: 2rem;
+    font-weight: 700;
+    background: transparent;
+    padding: 1rem 2rem;
+    min-width: 200px;
+    border: solid 5px white;
+    outline: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: var(--transition-hover);
+}
+
+.switchModeButton:hover {
+    scale: 1.05;
+}
+
+.switchModeButton:active {
+    scale: 1;
+}
+
+#switchModeButton {
+    opacity: 1;
+    filter: blur(0);
+}
+
+.switchButtonLogo {
+    position: absolute;
+    height: 80px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -48%);
+    opacity: 0;
+    filter: blur(6px);
+}

@@ -1,0 +1,53 @@
+.noteCard {
+    display: flex;
+    width: 100%;
+    height: 30px;
+    flex-direction: column;
+    margin-top: 8px;
+    align-items: center;
+    padding: 0 0 0 16px;
+}
+
+.noteIcon {
+    height: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.noteIcon:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.noteCardHover {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px;
+    border-radius: 8px;
+    transition: var(--transition-hover);
+}
+
+.noteCardHover:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.noteCardHover span {
+    flex-grow: 1;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--color-dark-text);
+    margin-left: 8px;
+    cursor: default;
+}
+
+.notebookCardHeadHover:hover > .addNewNote img {
+    opacity: 1;
+}
+
+.addNewNote:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+}

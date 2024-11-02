@@ -1,0 +1,22 @@
+.contentEditable {
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+    width: 100%;
+    height: 100%;
+    padding: 0 64px;
+    font-size: 18px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.contentEditable:focus {
+    outline: none;
+}
+
+.addBlock {
+    display: flex;
+    height: 30px;
+    width: 100%;
+    background-color: var(--color-dark-module);
+}

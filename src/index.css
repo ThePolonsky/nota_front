@@ -1,0 +1,40 @@
+:root {
+  font-family: Nunito, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-dark-background: #192A33;
+  --color-light-border: #26404D;
+  --color-dark-panel: #26404D;
+  --color-dark-module: #4D7F99;
+  --color-dark-hover: #335566;
+  --color-green: #00CC88;
+  --color-green-hover: #00B277;
+  --color-dark-text:#CCCCCC;
+
+  --color-main-gradient: linear-gradient(255deg, #00AAFF 0%, #00CC88 100%);
+
+  --transition-hover: all 0.15s ease-in-out;
+  --transition-active: all 0.1s ease-in-out;
+}
+
+* {
+  font-family: Nunito, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+}

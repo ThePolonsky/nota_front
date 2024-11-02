@@ -1,0 +1,47 @@
+.noteBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: auto;
+    padding: 60px;
+}
+
+.noteBodyHeader {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0 24px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.noteTitle {
+    font-size: 48px;
+    font-weight: bold;
+    min-width: 50%;
+    margin-left: 32px;
+}
+
+.noteTitle:focus {
+    outline: none;
+}
+
+.noteInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    font-size: 14px;
+    color: var(--color-dark-module);
+    cursor: default;
+}
+
+.divider {
+    width: 100%;
+    height: 2px;
+    background: var(--color-dark-module);
+    border-radius: 1px;
+}
