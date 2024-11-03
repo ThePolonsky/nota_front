@@ -1,15 +1,13 @@
 import styles from './TableCard.module.css';
 import NotebookCard from '../NotebookCard/NotebookCard.jsx';
 import axios from 'axios';
-import {useEffect, useState} from 'react';
+import OptionsModule from '../OptionsModule/OptionsModule.jsx';
+import {useState} from 'react';
+import cn from 'classnames';
 
-function TableCard({title, id, userId}) {
+function TableCard({title, id, userId, notebooks, notes}) {
 
-    const [notebooks, setNotebooks] = useState([]);
-
-    useEffect(() => {
-
-    }, []);
+    const [optionsActive, setOptionsActive] = useState(false);
 
     const addNewNotebook = async () => {
         const title = 'New note';
@@ -24,19 +22,36 @@ function TableCard({title, id, userId}) {
         }
     };
 
+    const activateOptions = () => {
+        setOptionsActive(!optionsActive);
+        console.log('leave');
+    };
+
     return (
-        <div className={styles.personalTable}>
-            <div className={styles.personalHead}>
+        <div className={styles.Table}>
+            <div className={styles.tableHead}>
                 <span>{title}</span>
-                <button className={styles.addNewPersonalNotebook} onClick={addNewNotebook}>
-                    <img src="/public/littlePlusIcon.svg" alt="add new private notebook"/>
-                </button>
+                <div className={styles.tableCardButtons}>
+                    <div className={styles.tableOptions} onClick={activateOptions}>
+                        <img src="/public/optionsIcon.svg" alt="table options"/>
+                        <OptionsModule
+                            className={cn(styles.tableOptionsModuleBG, {
+                                [styles.active]: optionsActive
+                            })}
+                            onMouseLeave={activateOptions}
+                        />
+                    </div>
+                    <button className={styles.addNewNotebook} onClick={addNewNotebook}>
+                        <img src="/public/littlePlusIcon.svg" alt="add new private notebook"/>
+                    </button>
+
+                </div>
             </div>
             {notebooks.filter(notebook => notebook.tableId === id).map((notebook, index) => {
-                    return (
-                        <NotebookCard
-                            key={index}
-                            id={notebook.notebookId}
+                return (
+                    <NotebookCard
+                        key={index}
+                        id={notebook.notebookId}
                             title={notebook.notebookTitle}
                             notes={notes.filter(note => note.notebookId === notebook.notebookId)}
                         />

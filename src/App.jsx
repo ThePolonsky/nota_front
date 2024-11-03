@@ -15,12 +15,13 @@ function App() {
     const userId = 1;
 
     const [tables, setTables] = useState([]);
+    const [notebooks, setNotebooks] = useState([]);
+    const [notes, setNotes] = useState([]);
 
     const fetchNotebooks = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:3000/api/tables/${userId}`);
             setTables(response.data);
-
         } catch (error) {
             console.error('Произошла ошибка:', error);
             throw error;
@@ -38,10 +39,15 @@ function App() {
     return (
         <>
             <LeftPanel>
-                <LeftPanelHeader/>
+                <LeftPanelHeader
+                    setTables={setTables}
+                    userId={userId}
+                />
                 <TablesList
                     tables={tables}
                     userId={userId}
+                    notebooks={notebooks}
+                    notes={notes}
                 />
             </LeftPanel>
             <Main>

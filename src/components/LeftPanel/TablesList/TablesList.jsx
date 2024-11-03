@@ -1,7 +1,7 @@
 import styles from './TablesList.module.css';
 import TableCard from '../TableCard/TableCard.jsx';
 
-function TablesList({tables, userId}) {
+function TablesList({tables, userId, notebooks, notes}) {
 
 
 
@@ -15,6 +15,8 @@ function TablesList({tables, userId}) {
                             id={table.id}
                             title={table.title}
                             userId={userId}
+                            notebooks={notebooks}
+                            notes={notes}
                         />
                     ))}
                 </>

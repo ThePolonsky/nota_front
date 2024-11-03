@@ -1,28 +1,41 @@
-.personalTable {
+.Table {
     display: flex;
     width: 100%;
     height: fit-content;
     flex-direction: column;
     margin-top: 8px;
     align-items: center;
+    position: relative;
 }
 
-.personalHead {
+.tableHead {
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
     justify-content: space-between;
+    padding-right: 14px;
+    padding-left: 20px;
 }
 
-.personalHead span {
+.tableHead span {
     font-size: 18px;
     font-weight: 600;
     color: var(--color-dark-text);
-    margin-left: 20px;
 }
 
-.addNewPersonalNotebook {
+.tableCardButtons {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.addNewNotebook,
+.tableOptions {
     display: flex;
     width: 24px;
     height: 24px;
@@ -32,22 +45,40 @@
     border: none;
     outline: none;
     border-radius: 6px;
-    margin-right: 14px;
     background: none;
     transition: var(--transition-hover);
 }
 
-.addNewPersonalNotebook img {
+.addNewNotebook img,
+.tableOptions img {
     width: 14px;
     opacity: 0;
     transition: var(--transition-hover);
 }
 
-.personalHead:hover > .addNewPersonalNotebook img {
+.tableHead:hover >.tableCardButtons > .addNewNotebook img,
+.tableHead:hover >.tableCardButtons > .tableOptions img {
     opacity: 1;
 }
 
-.addNewPersonalNotebook:hover {
+.addNewNotebook:hover,
+.tableOptions:hover {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.tableOptionsModuleBG {
+    display: none;
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+.active {
+    display: block;
+    opacity: 1;
 }
