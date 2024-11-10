@@ -4,10 +4,8 @@ import axios from 'axios';
 function LeftPanelHeader({setTables, userId}) {
 
     const createTable = async (userId) => {
-        const title = 'New table';
         try {
             const response = await axios.post('http://localhost:3000/api/tables', {
-                title,
                 userId
             });
 

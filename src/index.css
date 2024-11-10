@@ -19,6 +19,8 @@
   --color-dark-hover: #335566;
   --color-green: #00CC88;
   --color-green-hover: #00B277;
+  --color-red: #E74C3C;
+  --color-red-hover: #B53C2F;
   --color-dark-text:#CCCCCC;
 
   --color-main-gradient: linear-gradient(255deg, #00AAFF 0%, #00CC88 100%);

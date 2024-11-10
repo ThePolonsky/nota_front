@@ -1,7 +1,7 @@
 import styles from './TablesList.module.css';
 import TableCard from '../TableCard/TableCard.jsx';
 
-function TablesList({tables, userId, notebooks, notes}) {
+function TablesList({tables, setTables, userId, notebooks, setNotebooks, notes}) {
 
 
 
@@ -12,10 +12,13 @@ function TablesList({tables, userId, notebooks, notes}) {
                     {tables.map(table => (
                         <TableCard
                             key={`${table.id}`}
-                            id={table.id}
+                            tableId={table.id}
                             title={table.title}
+                            tables={tables}
+                            setTables={setTables}
                             userId={userId}
                             notebooks={notebooks}
+                            setNotebooks={setNotebooks}
                             notes={notes}
                         />
                     ))}

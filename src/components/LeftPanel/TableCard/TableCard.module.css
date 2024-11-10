@@ -1,3 +1,14 @@
+@keyframes blurAnimation {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
 .Table {
     display: flex;
     width: 100%;
@@ -5,7 +16,11 @@
     flex-direction: column;
     margin-top: 8px;
     align-items: center;
-    position: relative;
+
+    animation-name: blurAnimation;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
 }
 
 .tableHead {
@@ -32,10 +47,11 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
+    position: relative;
 }
 
 .addNewNotebook,
-.tableOptions {
+.tableOptionsBtn {
     display: flex;
     width: 24px;
     height: 24px;
@@ -50,35 +66,103 @@
 }
 
 .addNewNotebook img,
-.tableOptions img {
+.tableOptionsBtn img {
     width: 14px;
     opacity: 0;
     transition: var(--transition-hover);
 }
 
-.tableHead:hover >.tableCardButtons > .addNewNotebook img,
-.tableHead:hover >.tableCardButtons > .tableOptions img {
+.tableHead:hover >.tableCardButtons img {
     opacity: 1;
 }
 
 .addNewNotebook:hover,
-.tableOptions:hover {
+.tableOptionsBtn:hover {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.tableOptionsModuleBG {
-    display: none;
-    background: transparent;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
+.tableOptionsPopover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--color-main-gradient);
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.4);
 }
 
-.active {
-    display: block;
-    opacity: 1;
+.popoverBtn {
+    outline: none;
+    border: none;
+    font-size: 24px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.popoverBtn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.tableAgreementOnDelete,
+.tableRename {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--color-main-gradient);
+    border-radius: 20px;
+}
+
+.tableAgreementOnDelete > span {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.tableAgreementOnDeleteButtons,
+.tableRenameButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.tableRenameTitle {
+    outline: none;
+    border: none;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+}
+
+.agreementBtn {
+    font-size: 24px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.green {
+    background: var(--color-green);
+}
+
+.green:hover {
+    background: var(--color-green-hover);
+}
+
+.red {
+    background: var(--color-red);
+}
+
+.red:hover {
+    background: var(--color-red-hover);
 }
