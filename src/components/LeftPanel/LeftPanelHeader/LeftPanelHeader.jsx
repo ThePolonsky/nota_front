@@ -5,9 +5,7 @@ function LeftPanelHeader({setTables, userId}) {
 
     const createTable = async (userId) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/tables', {
-                userId
-            });
+            const response = await axios.post(`http://localhost:3000/api/users/${userId}/create-new-table`);
 
             if (response.status !== 200) {
                 throw new Error('Ошибка при создании таблицы');

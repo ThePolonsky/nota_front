@@ -27,7 +27,8 @@ function App() {
 
     const fetchTables = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/tables/${userId}`);
+            const response = await axios.get(`http://localhost:3000/api/users/${userId}/tables`);
+            console.log(response.data);
             setTables(response.data);
         } catch (error) {
             console.error('Произошла ошибка:', error);
@@ -47,7 +48,7 @@ function App() {
 
     const loadData = async () => {
         await fetchTables(userId);
-        await fetchNotebooks(userId);
+        // await fetchNotebooks(userId);
     };
 
     useEffect(() => {
