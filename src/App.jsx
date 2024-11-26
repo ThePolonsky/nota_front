@@ -7,14 +7,18 @@ import User from './components/Main/Header/User/User.jsx';
 import LeftPanelHeader from './components/LeftPanel/LeftPanelHeader/LeftPanelHeader.jsx';
 import TablesList from './components/LeftPanel/TablesList/TablesList.jsx';
 import NoteContent from './components/Main/NoteBody/NoteBody.jsx';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import Popover from './components/Popover/Popover.jsx';
 import {PopoverContext} from './context/popover.context.js';
+import {UserContext} from './context/user.context.js';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
 
-    const userId = 1;
+    const navigate = useNavigate();
+
+    const {userId} = useContext(UserContext);
 
     const [tables, setTables] = useState([]);
     const [notebooks, setNotebooks] = useState([]);
@@ -24,6 +28,10 @@ function App() {
     const [popoverContent, setPopoverContent] = useState(null);
     const [idForPopover, setIdForPopover] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState(null);
+
+    if (userId === undefined || userId === null) {
+        navigate('/auth');
+    }
 
     const fetchTables = async (userId) => {
         try {
@@ -55,41 +63,49 @@ function App() {
         loadData();
     }, []);
 
+    const isUserUndefined = () => {
+        if (userId === undefined) {
+            navigate('/auth');
+        }
+    };
+
+    isUserUndefined();
+
     return (
         <>
-            <PopoverContext.Provider value={{
-                popoverType,
-                popoverContent,
-                setPopoverType,
-                setPopoverContent,
-                popoverPosition,
-                setPopoverPosition,
-                idForPopover,
-                setIdForPopover
-            }}>
-                <LeftPanel>
-                    <LeftPanelHeader
-                        setTables={setTables}
-                        userId={userId}
-                    />
-                    <TablesList
-                        tables={tables}
-                        setTables={setTables}
-                        userId={userId}
-                        notebooks={notebooks}
-                        setNotebooks={setNotebooks}
-                        notes={notes}
-                    />
-                </LeftPanel>
-                <Main>
-                    <Header>
-                        <TabsList/>
-                        <User/>
-                    </Header>
-                    <NoteContent/>
-                </Main>
-                <Popover/>
-            </PopoverContext.Provider>
+                <PopoverContext.Provider value={{
+                    popoverType,
+                    popoverContent,
+                    setPopoverType,
+                    setPopoverContent,
+                    popoverPosition,
+                    setPopoverPosition,
+                    idForPopover,
+                    setIdForPopover
+                }}>
+                    <LeftPanel>
+                        <LeftPanelHeader
+                            setTables={setTables}
+                            userId={userId}
+                        />
+                        <TablesList
+                            tables={tables}
+                            setTables={setTables}
+                            userId={userId}
+                            notebooks={notebooks}
+                            setNotebooks={setNotebooks}
+                            notes={notes}
+                        />
+                    </LeftPanel>
+                    <Main>
+                        <Header>
+                            <TabsList/>
+                            <User/>
+                        </Header>
+                        <NoteContent/>
+                    </Main>
+                    <Popover/>
+                </PopoverContext.Provider>
         </>
     );
 }

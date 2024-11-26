@@ -1,17 +1,66 @@
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import styles from './Auth.module.css';
 import gsap from 'gsap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import {UserContext} from '../../context/user.context.js';
 
-const Login = () => {
+const Auth = () => {
+    
+    const {userId, setUserId} = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     const [mode, setMode] = useState('Sign in');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Отправка запроса на авторизацию
+        switch (mode) {
+            case 'Sign in': {
+                try {
+                    const data = await signIn();
+                    setUserId(data.data.userId);
+                    console.log(data);
+                    navigate('/');
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+                break;
+            case 'Sign up': {
+                const data = await signUp();
+                setUserId(data.data.userId);
+                navigate('/');
+            }
+        }
+    };
+
+    const signIn = async () => {
+        const email = document.getElementsByName('email')[0].value;
+        const password = document.getElementsByName('password')[0].value;
+        try {
+            const response = await axios.post('http://localhost:3000/api/sign-in', {email, password});
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const signUp = async () => {
+        if (document.getElementsByName('terms')[0].value) {
+            const name = document.getElementsByName('name')[0].value;
+            const email = document.getElementsByName('email')[0].value;
+            const password = document.getElementsByName('password')[0].value;
+            try {
+                const response = await axios.post('http://localhost:3000/api/sign-up', {name, email, password});
+                return response;
+            } catch (error) {
+                console.error(error);
+            }
+        }
     };
 
     const switchMode = async () => {
@@ -118,7 +167,7 @@ const Login = () => {
                                        value={password}
                                        placeholder={'Password'}/>
                                 <div className={styles.terms}>
-                                    <input className={styles.termsCheckbox} type={'checkbox'}/>
+                                    <input className={styles.termsCheckbox} name={'terms'} type={'checkbox'}/>
                                     <div>I have read the <a href="#">Term & Conditions</a></div>
                                 </div>
                                 <button type={'submit'}>Sign up</button>
@@ -136,12 +185,12 @@ const Login = () => {
     };
 
     return (
-        <div className={styles.AuthBody}>
-            <div className={styles.container}>
-                {renderLogin()}
+            <div className={styles.AuthBody}>
+                <div className={styles.container}>
+                    {renderLogin()}
+                </div>
             </div>
-        </div>
     );
 };
 
-export default Login;
+export default Auth;

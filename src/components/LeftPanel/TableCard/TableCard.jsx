@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useContext} from 'react';
 import {PopoverContext} from '../../../context/popover.context.js';
 import cn from 'classnames';
+import {useRay} from "react-ray";
 
 function TableCard({title, tables, setTables, tableId, userId, notebooks, setNotebooks, notes}) {
     const {
@@ -30,8 +31,9 @@ function TableCard({title, tables, setTables, tableId, userId, notebooks, setNot
     const deleteTable = async () => {
         try {
             const response = await axios.delete('http://localhost:3000/api/delete-table', {
-                userId,
-                tableId
+                params: {
+                    tableId: tableId
+                }
             });
             console.log(response.data);
             setTables(prevTables => prevTables.filter((item) => item.id !== tableId));
@@ -68,7 +70,7 @@ function TableCard({title, tables, setTables, tableId, userId, notebooks, setNot
         const newTitle = document.getElementById('tableRenameTitleInput').value;
         const currentTable = tables.find(table => table.id === tableId);
         try {
-            const response = await axios.put('http://localhost:3000/api/update-table-title', {
+            const response = await axios.put('http://localhost:3000/api/tables/rename-table', {
                 tableId,
                 newTitle
             });

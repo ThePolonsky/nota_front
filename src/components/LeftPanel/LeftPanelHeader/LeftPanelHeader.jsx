@@ -11,6 +11,8 @@ function LeftPanelHeader({setTables, userId}) {
                 throw new Error('Ошибка при создании таблицы');
             }
 
+            console.log(response);
+
             const createdTable = response.data;
             console.log('Таблица создана успешно:', createdTable);
             return createdTable;
