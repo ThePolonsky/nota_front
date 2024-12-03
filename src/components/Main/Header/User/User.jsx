@@ -1,9 +1,9 @@
 import styles from './User.module.css';
 
-function User(props) {
+function User({userName}) {
     return (
         <button className={styles.userBtn}>
-            <p className={styles.userName}>User Name</p>
+            <p className={styles.userName}>{userName}</p>
             {/*<img className={styles.userAvatar} src="#" alt="User avatar"/>*/}
         </button>
     );

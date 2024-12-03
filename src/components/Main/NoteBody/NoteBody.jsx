@@ -1,9 +1,8 @@
 import styles from './NoteBody.module.css';
 import {useEffect, useState} from 'react';
-import NoteContent from '../NoteContent/NoteContent.jsx';
 import ContentEditable from 'react-contenteditable';
 
-function NoteBody() {
+function NoteBody({selectedNote}) {
 
     const note = {
         title: 'Note title',
@@ -13,12 +12,14 @@ function NoteBody() {
     };
 
     const [isSaved, setIsSaved] = useState(true);
-    const [content, setContent] = useState(note.content);
-    const [noteTitle, setNoteTitle] = useState(note.title);
+    const [content, setContent] = useState(selectedNote.content);
+    const [noteTitle, setNoteTitle] = useState(selectedNote.title);
+    const [updatedAt, setUpdatedAt] = useState(selectedNote.updatedAt);
+
 
     const handleChange = () => {
         setIsSaved(false);
-        setNoteTitle(document.getElementById('contentEditable').innerHTML);
+        setNoteTitle(document.getElementById('noteTitle').innerHTML);
         // setContent(noteContent);
     };
 
@@ -33,7 +34,7 @@ function NoteBody() {
     }, [content, noteTitle]);
 
     return (
-        <section className={styles.noteBody}>
+        <section className={styles.noteBody} id={'noteBody-' + selectedNote.id}>
             <div className={styles.noteBodyHeader}>
                 <ContentEditable
                     className={styles.noteTitle}
@@ -46,14 +47,21 @@ function NoteBody() {
                 {/*>{note.title}</span>*/}
                 <div className={styles.noteInfo}>
                     <span>Last update</span>
-                    <span>{note.updateDate}</span>
+                    <span>{selectedNote.toLocaleString('en-US')}</span>
                 </div>
             </div>
             <div className={styles.divider}></div>
-            <NoteContent
-                content={note.content}
-                setContent={setContent}
-                setIsSaved={setIsSaved}
+            {/*<NoteContent*/}
+            {/*    content={note.content}*/}
+            {/*    setContent={setContent}*/}
+            {/*    setIsSaved={setIsSaved}*/}
+            {/*/>*/}
+            <ContentEditable
+                className={styles.contentEditable}
+                id={'contentEditable'}
+                html={content}
+                onChange={handleChange}
+                tagName="div"
             />
         </section>
     );

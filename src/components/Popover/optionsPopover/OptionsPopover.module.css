@@ -1,0 +1,27 @@
+.optionsPopover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--color-main-gradient);
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.4);
+}
+
+.popoverBtn {
+    outline: none;
+    border: none;
+    font-size: 24px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.popoverBtn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}

@@ -1,67 +1,76 @@
 import './App.css';
 import LeftPanel from './components/LeftPanel/LeftPanel.jsx';
 import Main from './components/Main/Main.jsx';
-import Header from './components/Main/Header/Header.jsx';
-import TabsList from './components/Main/Header/TabsList/TabsList.jsx';
-import User from './components/Main/Header/User/User.jsx';
 import LeftPanelHeader from './components/LeftPanel/LeftPanelHeader/LeftPanelHeader.jsx';
 import TablesList from './components/LeftPanel/TablesList/TablesList.jsx';
-import NoteContent from './components/Main/NoteBody/NoteBody.jsx';
 import {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import Popover from './components/Popover/Popover.jsx';
 import {PopoverContext} from './context/popover.context.js';
 import {UserContext} from './context/user.context.js';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {TabsContext} from './context/tabs.context.js';
 
 function App() {
 
     const navigate = useNavigate();
 
     const {userId} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
+
+    const [tabs, setTabs] = useState([]);
+    const [selectedTabId, setSelectedTabId] = useState(null);
 
     const [tables, setTables] = useState([]);
     const [notebooks, setNotebooks] = useState([]);
     const [notes, setNotes] = useState([]);
 
     const [popoverType, setPopoverType] = useState(null);
-    const [popoverContent, setPopoverContent] = useState(null);
-    const [idForPopover, setIdForPopover] = useState(null);
+    const [popoverData, setPopoverData] = useState({});
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    if (userId === undefined || userId === null) {
-        navigate('/auth');
-    }
+    //e|---------TEST VARIABLES---------|
 
-    const fetchTables = async (userId) => {
-        try {
-            const response = await axios.get(`http://localhost:3000/api/users/${userId}/tables`);
-            console.log(response.data);
-            setTables(response.data);
-        } catch (error) {
-            console.error('Произошла ошибка:', error);
-            throw error;
-        }
+    const testTab = {
+        tabId: 1,
+        noteId: null
     };
 
-    const fetchNotebooks = async (userId) => {
-        try {
-            const response = await axios.get(`http://localhost:3000/api/notebooks/${userId}`);
-            setNotebooks(response.data);
-        } catch (error) {
-            console.error('Произошла ошибка:', error);
-            throw error;
-        }
-    };
+    setTabs((prevTabs) => [...prevTabs, testTab]);
+    setSelectedTabId(1);
 
-    const loadData = async () => {
-        await fetchTables(userId);
-        // await fetchNotebooks(userId);
-    };
+    //e|------------------|
 
     useEffect(() => {
-        loadData();
+        if (userId === undefined || userId === null) {
+            navigate('/auth');
+        } else {
+            loadData();
+        }
     }, []);
+
+    const loadData = async () => {
+        const response = await fetchData(userId);
+        const user = response.data;
+        setUser(user);
+        setTables(user.tables);
+        setNotebooks(user.notebooks);
+        setNotes(user.notes);
+    };
+
+    const fetchData = async (userId) => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/get-content-of-user', {
+                params: {
+                    userId: userId
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            throw error;
+        }
+    };
 
     const isUserUndefined = () => {
         if (userId === undefined) {
@@ -73,15 +82,19 @@ function App() {
 
     return (
         <>
-                <PopoverContext.Provider value={{
-                    popoverType,
-                    popoverContent,
-                    setPopoverType,
-                    setPopoverContent,
-                    popoverPosition,
-                    setPopoverPosition,
-                    idForPopover,
-                    setIdForPopover
+            <PopoverContext.Provider value={{
+                popoverType,
+                popoverData,
+                setPopoverType,
+                setPopoverData,
+                popoverPosition,
+                setPopoverPosition
+            }}>
+                <TabsContext.Provider value={{
+                    tabs,
+                    setTabs,
+                    selectedTabId,
+                    setSelectedTabId
                 }}>
                     <LeftPanel>
                         <LeftPanelHeader
@@ -91,21 +104,16 @@ function App() {
                         <TablesList
                             tables={tables}
                             setTables={setTables}
-                            userId={userId}
                             notebooks={notebooks}
                             setNotebooks={setNotebooks}
                             notes={notes}
+                            setNotes={setNotes}
                         />
                     </LeftPanel>
-                    <Main>
-                        <Header>
-                            <TabsList/>
-                            <User/>
-                        </Header>
-                        <NoteContent/>
-                    </Main>
+                    <Main/>
                     <Popover/>
-                </PopoverContext.Provider>
+                </TabsContext.Provider>
+            </PopoverContext.Provider>
         </>
     );
 }

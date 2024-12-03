@@ -1,0 +1,24 @@
+.addNewItemBtn {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background: none;
+    transition: var(--transition-hover);
+}
+
+.addNewItemBtn img {
+    width: 14px;
+    opacity: 0;
+    transition: var(--transition-hover);
+}
+
+.addNewItemBtn:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+}

@@ -3,71 +3,56 @@ import NotebookCard from '../NotebookCard/NotebookCard.jsx';
 import axios from 'axios';
 import {useContext} from 'react';
 import {PopoverContext} from '../../../context/popover.context.js';
-import cn from 'classnames';
-import {useRay} from "react-ray";
+import OptionsButton from '../Buttons/OptionsButton/OptionsButton.jsx';
+import AddNewButton from '../Buttons/AddNewButton/AddNewButton.jsx';
+import {UserContext} from '../../../context/user.context.js';
 
-function TableCard({title, tables, setTables, tableId, userId, notebooks, setNotebooks, notes}) {
+function TableCard({title, tables, access, setTables, tableId, notebooks, setNotebooks, notes, setNotes}) {
+
+    const {userId} = useContext(UserContext);
+    
     const {
         setPopoverType,
-        setPopoverContent,
-        setPopoverPosition,
-        setIdForPopover
+        setPopoverData,
     } = useContext(PopoverContext);
 
     const addNewNotebook = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/api/notebooks', {
-                tableId,
-                userId
+            const response = await axios.post('http://localhost:3000/api/notebooks/create-notebook', {
+                userId,
+                tableId
             });
             const newNotebook = response.data;
-            newNotebook.table_id = tableId;
-            setNotebooks(prevNotebooks => [...prevNotebooks, response.data]);
+            newNotebook.tableId = tableId;
+            setNotebooks(prevNotebooks => [...prevNotebooks, newNotebook]);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const deleteTable = async () => {
-        try {
-            const response = await axios.delete('http://localhost:3000/api/delete-table', {
-                params: {
-                    tableId: tableId
-                }
-            });
-            console.log(response.data);
-            setTables(prevTables => prevTables.filter((item) => item.id !== tableId));
-            setPopoverType(null);
-        } catch (error) {
-            console.error(error);
-        }
+    //e|---------POPOVERS---------|
+
+    const openTableOptionsPopover = (e) => {
+        setPopoverType('options');
+        setPopoverData({
+            openRename: openRename,
+            openAgreementOnDelete: openAgreementOnDeleteTable,
+            position: e
+        });
     };
 
-    const closePopover = () => {
-        setPopoverType(null);
-    };
+    //w|------RENAME------|
 
-    const openAgreementOnDelete = () => {
-        setPopoverPosition({left: '50%', top: '50%', transform: 'translate(-50%, -50%)'});
-        setPopoverType('tableAgreementOnDelete');
-        setIdForPopover(tableId);
-        setPopoverContent(
-            <div className={styles.tableAgreementOnDelete}>
-                <span>Delete table &#34;{title}&#34;?</span>
-                <div className={styles.tableAgreementOnDeleteButtons}>
-                    <button className={cn(styles.popoverBtn, styles.agreementBtn, styles.green)}
-                            onClick={deleteTable}>Delete
-                    </button>
-                    <button className={cn(styles.popoverBtn, styles.agreementBtn, styles.red)}
-                            onClick={closePopover}>Cancel
-                    </button>
-                </div>
-            </div>
-        );
+    const openRename = () => {
+        setPopoverType('rename');
+        setPopoverData({
+            title: title,
+            saveNewTitle: saveNewTitle
+        });
     };
 
     const saveNewTitle = async () => {
-        const newTitle = document.getElementById('tableRenameTitleInput').value;
+        const newTitle = document.getElementById('renameTitleInput').value;
         const currentTable = tables.find(table => table.id === tableId);
         try {
             const response = await axios.put('http://localhost:3000/api/tables/rename-table', {
@@ -83,64 +68,82 @@ function TableCard({title, tables, setTables, tableId, userId, notebooks, setNot
         }
     };
 
-    const openRename = () => {
-        setPopoverPosition({left: '50%', top: '50%', transform: 'translate(-50%, -50%)'});
-        setPopoverType('tableRename');
-        setIdForPopover(tableId);
-        setPopoverContent(
-            <div className={styles.tableRename}>
-                <input autoFocus={true} type={'text'} className={styles.tableRenameTitle} id={'tableRenameTitleInput'} defaultValue={title} onKeyDown={(e) => {
-                    if (e.key === 'Enter') saveNewTitle();
-                    if (e.key === 'Escape') closePopover();
-                    console.log(e.key);
-                }}></input>
-                <div className={styles.tableRenameButtons}>
-                    <button className={cn(styles.popoverBtn, styles.agreementBtn, styles.green)}
-                            onClick={saveNewTitle}>Save
-                    </button>
-                    <button className={cn(styles.popoverBtn, styles.agreementBtn, styles.red)}
-                            onClick={closePopover}>Cancel
-                    </button>
-                </div>
-            </div>
-        );
+    //w|------DELETE------|
+
+    const openAgreementOnDeleteTable = () => {
+        setPopoverType('delete');
+        // setIdForPopover(tableId);
+        setPopoverData({
+            title: title,
+            deleteItem: deleteTable,
+            item: 'table'
+        });
     };
 
-    const openTableOptionsPopover = (e) => {
-        setPopoverPosition({left: `${e.pageX}px`, top: `${e.pageY}px`});
-        setPopoverType('tableOptions');
-        setPopoverContent(
-            <div className={styles.tableOptionsPopover}>
-                <button className={styles.popoverBtn} onClick={openRename}>Rename</button>
-                <button className={styles.popoverBtn} onClick={openAgreementOnDelete}>Delete</button>
-            </div>
-        );
+    const deleteTable = async () => {
+        try {
+            const response = await axios.delete('http://localhost:3000/api/tables/delete-table', {
+                params: {
+                    tableId: tableId
+                }
+            });
+            setTables(prevTables => prevTables.filter((item) => item.id !== tableId));
+            setPopoverType(null);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    //e|---------RENDER---------|
+
+    //w|------OPTIONS BUTTON------|
+
+    const renderOptionsBtn = (access) => {
+        if (access !== 'PERSONAL') {
+            return (
+                <OptionsButton
+                    openOptionsPopover={openTableOptionsPopover}
+                />
+            );
+        }
+    };
+
+    //w|------NOTEBOOKS------|
+
+    const renderNotebooks = (notebooks) => {
+        if (notebooks.length > 0) {
+            return (
+                notebooks.filter((notebook) => notebook.tableId === tableId).map((notebook, index) => {
+                        return (
+                            <NotebookCard
+                                key={index}
+                                notebookId={notebook.id}
+                                title={notebook.title}
+                                notebooks={notebooks}
+                                setNotebooks={setNotebooks}
+                                notes={notes.filter(note => note.notebookId === notebook.id)}
+                                setNotes={setNotes}
+                            />
+                        );
+                    }
+                )
+            );
+        }
     };
 
     return (
-        <div className={styles.Table}>
+        <div className={styles.tableCard}>
             <div className={styles.tableHead}>
                 <span>{title}</span>
                 <div className={styles.tableCardButtons}>
-                    <button className={styles.tableOptionsBtn} onClick={(e) => openTableOptionsPopover(e)}>
-                        <img src="/public/optionsIcon.svg" alt="table options"/>
-                    </button>
-                    <button className={styles.addNewNotebook} onClick={addNewNotebook}>
-                        <img src="/public/littlePlusIcon.svg" alt="add new private notebook"/>
-                    </button>
+                    {renderOptionsBtn(access)}
+                    <AddNewButton
+                        addNewItem={addNewNotebook}
+                        item={'notebook'}
+                    />
                 </div>
             </div>
-            {notebooks.filter(notebook => notebook.table_id === tableId).map((notebook, index) => {
-                    return (
-                        <NotebookCard
-                            key={index}
-                            id={notebook.id}
-                            title={notebook.title}
-                            notes={notes.filter(note => note.id === notebook.id)}
-                        />
-                    );
-                }
-            )}
+            {renderNotebooks(notebooks)}
         </div>
     );
 }

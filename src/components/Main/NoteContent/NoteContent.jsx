@@ -9,14 +9,14 @@ function NoteContent({content, setContent, setIsSaved}) {
     const handleChange = () => {
         setIsSaved(false);
         setNoteContent(document.getElementById('contentEditable').innerHTML);
-        setContent(noteContent);
+        // setContent(noteContent);
     };
 
     return (
             <ContentEditable
                 className={styles.contentEditable}
                 id={'contentEditable'}
-                html={noteContent}
+                html={content}
                 onChange={handleChange}
                 tagName="div"
             />

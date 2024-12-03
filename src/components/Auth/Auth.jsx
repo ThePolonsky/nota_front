@@ -21,9 +21,8 @@ const Auth = () => {
         switch (mode) {
             case 'Sign in': {
                 try {
-                    const data = await signIn();
-                    setUserId(data.data.userId);
-                    console.log(data);
+                    const response = await signIn();
+                    setUserId(response.data.userId);
                     navigate('/');
                 } catch (error) {
                     console.error(error);
@@ -31,8 +30,8 @@ const Auth = () => {
             }
                 break;
             case 'Sign up': {
-                const data = await signUp();
-                setUserId(data.data.userId);
+                const response = await signUp();
+                setUserId(response.data.userId);
                 navigate('/');
             }
         }
