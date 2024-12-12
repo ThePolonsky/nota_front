@@ -1,7 +1,11 @@
 import styles from './LeftPanelHeader.module.css';
 import axios from 'axios';
+import {useContext} from "react";
+import {UserContext} from "../../../context/user.context.js";
 
-function LeftPanelHeader({setTables, userId}) {
+function LeftPanelHeader({tables, setTables}) {
+
+    const { userId} = useContext(UserContext);
 
     const createTable = async (userId) => {
         try {

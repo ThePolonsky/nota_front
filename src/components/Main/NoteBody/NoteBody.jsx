@@ -1,61 +1,73 @@
 import styles from './NoteBody.module.css';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import ContentEditable from 'react-contenteditable';
+import {TabsContext} from '../../../context/tabs.context.js';
+import {UserContext} from '../../../context/user.context.js';
+import axios from 'axios';
 
-function NoteBody({selectedNote}) {
+function NoteBody({ tab, tables, notebooks, notes, setTables, setNotebooks, setNotes }) {
 
-    const note = {
-        title: 'Note title',
-        updateDate: new Date().toLocaleString('en-US'),
-        content: `<div>Note text area</div>
-            <div>Note content</div>`
-    };
+    const {userId} = useContext(UserContext);
+
+    const {tabs, setTabs, selectedTabIndex, setSelectedTabIndex} = useContext(TabsContext);
 
     const [isSaved, setIsSaved] = useState(true);
-    const [content, setContent] = useState(selectedNote.content);
-    const [noteTitle, setNoteTitle] = useState(selectedNote.title);
-    const [updatedAt, setUpdatedAt] = useState(selectedNote.updatedAt);
-
+    const [content, setContent] = useState(notes.find(note => note.id === tab.noteId).content);
+    const [noteTitle, setNoteTitle] = useState(notes.find(note => note.id === tab.noteId).title);
+    const [updatedAt, setUpdatedAt] = useState(new Date(notes.find(note => note.id === tab.noteId).updatedAt));
 
     const handleChange = () => {
         setIsSaved(false);
-        setNoteTitle(document.getElementById('noteTitle').innerHTML);
-        // setContent(noteContent);
+        setNoteTitle(document.getElementById('noteTitle').value);
+        setContent(document.getElementById('contentEditable').innerHTML);
     };
 
     useEffect(() => {
         let timerId;
-        timerId = setTimeout(() => {
+        const newNotes = [...notes];
+        const newNote = newNotes.find(note => note.id === tab.noteId);
+        newNote.title = noteTitle;
+        newNote.content = content;
+        setNotes(newNotes);
+        timerId = setTimeout(async () => {
+            await saveChanges(tab.noteId, noteTitle, content);
             setIsSaved(true);
-        },2000);
+        }, 2000);
         return () => {
             clearTimeout(timerId);
         };
-    }, [content, noteTitle]);
+    }, [isSaved]);
+
+    const saveChanges = async (noteId, newTitle, newContent) => {
+        try {
+            const response = await axios.put('http://localhost:3000/api/notes/save-changes', {
+                userId, noteId, newTitle, newContent
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            throw error;
+        }
+    };
+
+    useEffect(() => {
+        if (tabs[selectedTabIndex]?.noteId ?? false) {
+            setContent(notes.find(note => note.id === tab.noteId).content);
+            setNoteTitle(notes.find(note => note.id === tab.noteId).title);
+            setUpdatedAt(new Date(notes.find(note => note.id === tab.noteId).updatedAt));
+        }
+    }, [tabs, selectedTabIndex, notes]);
 
     return (
-        <section className={styles.noteBody} id={'noteBody-' + selectedNote.id}>
+        <section className={styles.noteBody}>
             <div className={styles.noteBodyHeader}>
-                <ContentEditable
-                    className={styles.noteTitle}
-                    html={noteTitle}
-                    onChange={handleChange}
-                    tagName="span"
-                />
-                {/*<span */}
-                {/*    className={styles.noteTitle}*/}
-                {/*>{note.title}</span>*/}
+                <input className={styles.noteTitle} id={'noteTitle'} value={noteTitle} onChange={handleChange}></input>
                 <div className={styles.noteInfo}>
                     <span>Last update</span>
-                    <span>{selectedNote.toLocaleString('en-US')}</span>
+                    <span>{updatedAt.toLocaleString('en-US')}</span>
                 </div>
             </div>
             <div className={styles.divider}></div>
-            {/*<NoteContent*/}
-            {/*    content={note.content}*/}
-            {/*    setContent={setContent}*/}
-            {/*    setIsSaved={setIsSaved}*/}
-            {/*/>*/}
             <ContentEditable
                 className={styles.contentEditable}
                 id={'contentEditable'}

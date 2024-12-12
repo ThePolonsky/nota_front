@@ -1,38 +1,37 @@
 import styles from './TabsList.module.css';
-import {useState} from 'react';
 import Tab from './Tab/Tab.jsx';
+import {TabsContext} from '../../../../context/tabs.context.js';
+import {useContext} from 'react';
 
-function TabsList() {
+function TabsList({ tables, notebooks, notes, setTables, setNotebooks, setNotes, renderNoteBody, setRenderNoteBody }) {
 
-    const [tabs, setTabs] = useState([]);
-    const [selectedTabId, setSelectedTabId] = useState();
-
-    const renderTabs = () => {
-        tabs.map(tab => {
-            return (
-                <Tab
-                    key={tab.id}
-                    id={tab.id}
-                />
-            );
-        });
-    };
+    const { tabs, setTabs, selectedTabIndex, setSelectedTabIndex } = useContext(TabsContext);
 
     const addNewTab = () => {
-        const newId = tabs.length > 0 ? Math.max(...tabs.id) + 1 : 0;
+        const newIndex = tabs.length > 0 ? tabs.length : 0;
         const newTab = {
-            id: newId,
             noteId: null
         };
+        setSelectedTabIndex(newIndex);
         setTabs([...tabs, newTab]);
-        setSelectedTabId(newId);
     };
 
     return (
         <div className={styles.tabsList}>
-            {/*{() => renderTabs()}*/}
+            {tabs.map((tab, index) => {
+                return (
+                    <Tab
+                        key={index}
+                        tabIndex={index}
+                        tab={tab}
+                        notes={notes}
+                        renderNoteBody={renderNoteBody}
+                        setRenderNoteBody={setRenderNoteBody}
+                    />
+                );
+            })}
             <div className={styles.addNewTab}>
-                <button className={styles.addNewTabBtn} onClick={() => addNewTab()}>
+                <button className={styles.addNewTabBtn} onClick={addNewTab}>
                     <img src="/addTabIcon.svg" alt="add new tab button"/>
                 </button>
             </div>

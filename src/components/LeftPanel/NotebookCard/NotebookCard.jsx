@@ -1,22 +1,21 @@
 import styles from './NotebookCard.module.css';
 import NoteCard from '../NoteCard/NoteCard.jsx';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {PopoverContext} from '../../../context/popover.context.js';
 import axios from 'axios';
 import OptionsButton from '../Buttons/OptionsButton/OptionsButton.jsx';
 import AddNewButton from '../Buttons/AddNewButton/AddNewButton.jsx';
 import {UserContext} from '../../../context/user.context.js';
+import {TabsContext} from '../../../context/tabs.context.js';
 
-function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNotes}) {
+function NotebookCard({ notebook, tables, notebooks, notes, setTables, setNotebooks, setNotes }) {
 
-    const {userId} = useContext(UserContext);
-    
-    const {
-        setPopoverType,
-        setPopoverData,
-    } = useContext(PopoverContext);
+    const { userId } = useContext(UserContext);
+    const { tabs, setTabs, selectedTabIndex, setSelectedTabIndex } = useContext(TabsContext);
+    const { setPopoverType, setPopoverData } = useContext(PopoverContext);
 
     const addNewNote = async () => {
+        const notebookId = notebook.id;
         try {
             const response = await axios.post('http://localhost:3000/api/notes/create-note', {
                 userId,
@@ -24,6 +23,7 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
             });
             const newNote = response.data;
             newNote.notebookId = notebookId;
+            newNote.content = '<div></br></div>';
             setNotes(prevNotes => [...prevNotes, newNote]);
         } catch (error) {
             console.error(error);
@@ -46,14 +46,16 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
     const openRename = () => {
         setPopoverType('rename');
         setPopoverData({
-            title: title,
+            title: notebook.title,
             saveNewTitle: saveNewTitle
         });
     };
 
     const saveNewTitle = async () => {
+        const notebookId = notebook.id;
         const newTitle = document.getElementById('renameTitleInput').value;
-        const currentNotebook = notebooks.find(notebook => notebook.id === notebookId);
+        const newNotebooks = [...notebooks];
+        const currentNotebook = newNotebooks.find(notebook => notebook.id === notebookId);
         try {
             const response = await axios.put('http://localhost:3000/api/notebooks/rename-notebook', {
                 notebookId,
@@ -61,7 +63,7 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
             });
             console.log(response.data);
             currentNotebook.title = newTitle;
-            setNotebooks(notebooks);
+            setNotebooks(newNotebooks);
             setPopoverType(null);
         } catch (error) {
             console.error(error);
@@ -74,13 +76,14 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
         setPopoverType('delete');
         // setIdForPopover(tableId);
         setPopoverData({
-            title: title,
+            title: notebook.title,
             deleteItem: deleteNotebook,
             item: 'notebook'
         });
     };
 
     const deleteNotebook = async () => {
+        const notebookId = notebook.id;
         try {
             const response = await axios.delete('http://localhost:3000/api/notebooks/delete-notebook', {
                 params: {
@@ -95,10 +98,10 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
     };
 
     return (
-        <div className={styles.notebookCard} notebook_id={notebookId}>
+        <div className={styles.notebookCard} notebook_id={notebook.id}>
             <div className={styles.notebookHead}>
                 <img className={styles.notebookIcon} src="/public/notebookIcon.svg" alt="notebook icon"/>
-                <span>{title}</span>
+                <span>{notebook.title}</span>
                 <div className={styles.notebookCardButtons}>
                     <OptionsButton
                         openOptionsPopover={openNotebookOptionsPopover}
@@ -110,15 +113,20 @@ function NotebookCard({title, notebookId, notebooks, setNotebooks, notes, setNot
                 </div>
             </div>
             {notes.map((note, index) => {
-                return (
-                    <NoteCard
-                        key={index}
-                        noteId={note.id}
-                        title={note.title}
-                        notes={notes}
-                        setNotes={setNotes}
-                    />
-                );
+                if (note.notebookId === notebook.id) {
+                    return (
+                        <NoteCard
+                            key={index}
+                            note={note}
+                            tables={tables}
+                            notebooks={notebooks}
+                            notes={notes}
+                            setTables={setTables}
+                            setNotebooks={setNotebooks}
+                            setNotes={setNotes}
+                        />
+                    );
+                }
             })}
         </div>
     );

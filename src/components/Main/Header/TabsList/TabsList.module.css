@@ -1,6 +1,9 @@
 .tabsList {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
 }
 
 .addNewTab {

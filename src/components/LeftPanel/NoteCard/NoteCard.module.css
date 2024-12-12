@@ -27,6 +27,7 @@
     padding: 4px;
     border-radius: 8px;
     transition: var(--transition-hover);
+    cursor: pointer;
 }
 
 .noteCardHover:hover {
@@ -40,7 +41,6 @@
     font-weight: 700;
     color: var(--color-dark-text);
     margin-left: 8px;
-    cursor: default;
 }
 
 .addNewNote:hover {

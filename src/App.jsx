@@ -15,11 +15,10 @@ function App() {
 
     const navigate = useNavigate();
 
-    const {userId} = useContext(UserContext);
-    const {user, setUser} = useContext(UserContext);
+    const { userId, user, setUser } = useContext(UserContext);
 
     const [tabs, setTabs] = useState([]);
-    const [selectedTabId, setSelectedTabId] = useState(null);
+    const [selectedTabIndex, setSelectedTabIndex] = useState(null);
 
     const [tables, setTables] = useState([]);
     const [notebooks, setNotebooks] = useState([]);
@@ -29,19 +28,7 @@ function App() {
     const [popoverData, setPopoverData] = useState({});
     const [popoverPosition, setPopoverPosition] = useState(null);
 
-    //e|---------TEST VARIABLES---------|
-
-    const testTab = {
-        tabId: 1,
-        noteId: null
-    };
-
-    setTabs((prevTabs) => [...prevTabs, testTab]);
-    setSelectedTabId(1);
-
-    //e|------------------|
-
-    useEffect(() => {
+    useEffect( () => {
         if (userId === undefined || userId === null) {
             navigate('/auth');
         } else {
@@ -51,11 +38,15 @@ function App() {
 
     const loadData = async () => {
         const response = await fetchData(userId);
-        const user = response.data;
-        setUser(user);
-        setTables(user.tables);
-        setNotebooks(user.notebooks);
-        setNotes(user.notes);
+        const userData = response.data;
+        setUser(userData);
+        setTables(userData.tables);
+        setNotebooks(userData.notebooks);
+        setNotes(userData.notes.map((note) => {
+            return {
+                ...note
+            };
+        }));
     };
 
     const fetchData = async (userId) => {
@@ -93,24 +84,31 @@ function App() {
                 <TabsContext.Provider value={{
                     tabs,
                     setTabs,
-                    selectedTabId,
-                    setSelectedTabId
+                    selectedTabIndex,
+                    setSelectedTabIndex
                 }}>
                     <LeftPanel>
                         <LeftPanelHeader
+                            tables={tables}
                             setTables={setTables}
-                            userId={userId}
                         />
                         <TablesList
                             tables={tables}
-                            setTables={setTables}
                             notebooks={notebooks}
-                            setNotebooks={setNotebooks}
                             notes={notes}
+                            setTables={setTables}
+                            setNotebooks={setNotebooks}
                             setNotes={setNotes}
                         />
                     </LeftPanel>
-                    <Main/>
+                    <Main
+                        tables={tables}
+                        notebooks={notebooks}
+                        notes={notes}
+                        setTables={setTables}
+                        setNotebooks={setNotebooks}
+                        setNotes={setNotes}
+                    />
                     <Popover/>
                 </TabsContext.Provider>
             </PopoverContext.Provider>

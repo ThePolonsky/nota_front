@@ -1,23 +1,22 @@
 import styles from './TableCard.module.css';
 import NotebookCard from '../NotebookCard/NotebookCard.jsx';
 import axios from 'axios';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {PopoverContext} from '../../../context/popover.context.js';
 import OptionsButton from '../Buttons/OptionsButton/OptionsButton.jsx';
 import AddNewButton from '../Buttons/AddNewButton/AddNewButton.jsx';
 import {UserContext} from '../../../context/user.context.js';
+import {TabsContext} from '../../../context/tabs.context.js';
 
-function TableCard({title, tables, access, setTables, tableId, notebooks, setNotebooks, notes, setNotes}) {
+function TableCard({table, tables, notebooks, notes, setTables, setNotebooks, setNotes}) {
 
-    const {userId} = useContext(UserContext);
-    
-    const {
-        setPopoverType,
-        setPopoverData,
-    } = useContext(PopoverContext);
+    const {userId, user, setUser} = useContext(UserContext);
+    const {tabs, setTabs, selectedTabIndex, setSelectedTabIndex} = useContext(TabsContext);
+    const {setPopoverType, setPopoverData} = useContext(PopoverContext);
 
     const addNewNotebook = async () => {
         try {
+            const tableId = table.id;
             const response = await axios.post('http://localhost:3000/api/notebooks/create-notebook', {
                 userId,
                 tableId
@@ -46,13 +45,14 @@ function TableCard({title, tables, access, setTables, tableId, notebooks, setNot
     const openRename = () => {
         setPopoverType('rename');
         setPopoverData({
-            title: title,
+            title: table.title,
             saveNewTitle: saveNewTitle
         });
     };
 
     const saveNewTitle = async () => {
         const newTitle = document.getElementById('renameTitleInput').value;
+        const tableId = table.id;
         const currentTable = tables.find(table => table.id === tableId);
         try {
             const response = await axios.put('http://localhost:3000/api/tables/rename-table', {
@@ -72,15 +72,15 @@ function TableCard({title, tables, access, setTables, tableId, notebooks, setNot
 
     const openAgreementOnDeleteTable = () => {
         setPopoverType('delete');
-        // setIdForPopover(tableId);
         setPopoverData({
-            title: title,
+            title: table.title,
             deleteItem: deleteTable,
             item: 'table'
         });
     };
 
     const deleteTable = async () => {
+        const tableId = table.id;
         try {
             const response = await axios.delete('http://localhost:3000/api/tables/delete-table', {
                 params: {
@@ -98,8 +98,8 @@ function TableCard({title, tables, access, setTables, tableId, notebooks, setNot
 
     //w|------OPTIONS BUTTON------|
 
-    const renderOptionsBtn = (access) => {
-        if (access !== 'PERSONAL') {
+    const renderOptionsBtn = () => {
+        if (table.access !== 'PERSONAL') {
             return (
                 <OptionsButton
                     openOptionsPopover={openTableOptionsPopover}
@@ -108,42 +108,35 @@ function TableCard({title, tables, access, setTables, tableId, notebooks, setNot
         }
     };
 
-    //w|------NOTEBOOKS------|
-
-    const renderNotebooks = (notebooks) => {
-        if (notebooks.length > 0) {
-            return (
-                notebooks.filter((notebook) => notebook.tableId === tableId).map((notebook, index) => {
-                        return (
-                            <NotebookCard
-                                key={index}
-                                notebookId={notebook.id}
-                                title={notebook.title}
-                                notebooks={notebooks}
-                                setNotebooks={setNotebooks}
-                                notes={notes.filter(note => note.notebookId === notebook.id)}
-                                setNotes={setNotes}
-                            />
-                        );
-                    }
-                )
-            );
-        }
-    };
-
     return (
         <div className={styles.tableCard}>
             <div className={styles.tableHead}>
-                <span>{title}</span>
+                <span>{table.title}</span>
                 <div className={styles.tableCardButtons}>
-                    {renderOptionsBtn(access)}
+                    {renderOptionsBtn()}
                     <AddNewButton
                         addNewItem={addNewNotebook}
                         item={'notebook'}
                     />
                 </div>
             </div>
-            {renderNotebooks(notebooks)}
+            {notebooks.map((notebook, index) => {
+                    if (notebook.tableId === table.id) {
+                        return (
+                            <NotebookCard
+                                key={index}
+                                notebook={notebook}
+                                tables={tables}
+                                notebooks={notebooks}
+                                notes={notes}
+                                setTables={setTables}
+                                setNotebooks={setNotebooks}
+                                setNotes={setNotes}
+                            />
+                        );
+                    }
+                }
+            )}
         </div>
     );
 }

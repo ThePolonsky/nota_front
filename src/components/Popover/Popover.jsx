@@ -1,9 +1,9 @@
 import styles from './Popover.module.css';
 import {useContext, useEffect, useState} from 'react';
 import {PopoverContext} from '../../context/popover.context.js';
-import OptionsPopover from './optionsPopover/OptionsPopover.jsx';
-import DeletePopover from './deletePopover/DeletePopover.jsx';
-import RenamePopover from './renamePopover/RenamePopover.jsx';
+import OptionsPopover from './OptionsPopover/OptionsPopover.jsx';
+import DeletePopover from './DeletePopover/DeletePopover.jsx';
+import RenamePopover from './RenamePopover/RenamePopover.jsx';
 
 const Popover = () => {
     const {
@@ -98,6 +98,12 @@ const Popover = () => {
                     />
                 );
             }
+            // case: 'user': {
+            //     const {user} = popoverData;
+            //     return (
+            //
+            //     )
+            // }
         }
     };
 
