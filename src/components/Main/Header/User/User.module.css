@@ -1,14 +1,21 @@
+.userSection {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
 .userBtn {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    margin-right: 8px;
+    padding: 8px;
     width: fit-content;
-    height: 32px;
-    padding: 10px;
-    border-radius: 8px;
-    background: transparent;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
     border: none;
     outline: none;
     cursor: pointer;
@@ -16,12 +23,12 @@
 }
 
 .userBtn:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .userAvatar {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 4px;
     background: white;
 }
@@ -29,4 +36,6 @@
 .userName {
     font-size: 1.25rem;
     font-weight: 600;
+    text-align: center;
+    width: 156px;
 }

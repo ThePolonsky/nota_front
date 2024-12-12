@@ -13,8 +13,8 @@
 
 .popoverContainer {
     position: fixed;
-    left: 0;
-    top: 0;
+    /*left: 0;*/
+    /*top: 0;*/
     z-index: 1000;
     animation-name: blurAnimation;
     animation-duration: 0.3s;

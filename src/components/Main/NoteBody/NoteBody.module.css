@@ -42,6 +42,10 @@
     cursor: default;
 }
 
+.noteInfo > span {
+    text-align: center;
+}
+
 .divider {
     width: 100%;
     height: 2px;

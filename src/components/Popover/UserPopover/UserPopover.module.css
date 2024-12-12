@@ -1,0 +1,36 @@
+.userPopoverBtnsList {
+    display: flex;
+    width: 216px;
+    background: rgba(0, 0, 0, 0.6);
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0 0 10px 10px;
+}
+
+.userAddAccountBtn,
+.userPopoverSignOutBtn {
+    width: 100%;
+    height: 32px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: var(--transition-hover);
+}
+
+.userAddAccountBtn:hover,
+.userPopoverSignOutBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.userPopoverSignOutBtn {
+    border-radius: 0 0 10px 10px;
+}
+
+.divider {
+    height: 2px;
+    width: 100%;
+    background: #00AAFF;
+}

@@ -4,6 +4,7 @@ import {PopoverContext} from '../../context/popover.context.js';
 import OptionsPopover from './OptionsPopover/OptionsPopover.jsx';
 import DeletePopover from './DeletePopover/DeletePopover.jsx';
 import RenamePopover from './RenamePopover/RenamePopover.jsx';
+import UserPopover from './UserPopover/UserPopover.jsx';
 
 const Popover = () => {
     const {
@@ -20,7 +21,8 @@ const Popover = () => {
 
     const pos = {
         center: {left: '50%', top: '50%', transform: 'translate(-50%, -50%)'},
-        click: positionOnClick
+        click: positionOnClick,
+        userBtn: {right: '0', top: '40px'}
     };
 
     const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +53,10 @@ const Popover = () => {
                 break;
             case 'delete': {
                 setPopoverPosition(pos.center);
+            }
+            break;
+            case 'user': {
+                setPopoverPosition(pos.userBtn);
             }
         }
     };
@@ -98,12 +104,15 @@ const Popover = () => {
                     />
                 );
             }
-            // case: 'user': {
-            //     const {user} = popoverData;
-            //     return (
-            //
-            //     )
-            // }
+            case 'user': {
+                // const {user, addAccount, SignOut} = popoverData;
+                const {user} = popoverData;
+                return (
+                    <UserPopover
+                        user={user}
+                    />
+                );
+            }
         }
     };
 

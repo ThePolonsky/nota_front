@@ -23,7 +23,7 @@ function NotebookCard({ notebook, tables, notebooks, notes, setTables, setNotebo
             });
             const newNote = response.data;
             newNote.notebookId = notebookId;
-            newNote.content = '<div></br></div>';
+            newNote.content = '<div></div>';
             setNotes(prevNotes => [...prevNotes, newNote]);
         } catch (error) {
             console.error(error);
