@@ -25,6 +25,7 @@ function TabsList({ tables, notebooks, notes, setTables, setNotebooks, setNotes,
                         tabIndex={index}
                         tab={tab}
                         notes={notes}
+                        setNotes={setNotes}
                         renderNoteBody={renderNoteBody}
                         setRenderNoteBody={setRenderNoteBody}
                     />

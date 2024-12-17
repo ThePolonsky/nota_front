@@ -42,8 +42,33 @@
     cursor: default;
 }
 
-.noteInfo > span {
+.noteInfoHead {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    gap: 12px;
+}
+
+.noteInfoHead > span {
     text-align: center;
+}
+
+.indicatorSaved {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-green);
+    transition: var(--transition-hover);
+}
+
+.indicatorNotSaved {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-red);
+    transition: var(--transition-hover);
 }
 
 .divider {

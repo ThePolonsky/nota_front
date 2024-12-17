@@ -1,7 +1,7 @@
 import styles from './LeftPanelHeader.module.css';
 import axios from 'axios';
-import {useContext} from "react";
-import {UserContext} from "../../../context/user.context.js";
+import {useContext} from 'react';
+import {UserContext} from '../../../context/user.context.js';
 
 function LeftPanelHeader({tables, setTables}) {
 
@@ -14,8 +14,6 @@ function LeftPanelHeader({tables, setTables}) {
             if (response.status !== 200) {
                 throw new Error('Ошибка при создании таблицы');
             }
-
-            console.log(response);
 
             const createdTable = response.data;
             console.log('Таблица создана успешно:', createdTable);
@@ -41,6 +39,9 @@ function LeftPanelHeader({tables, setTables}) {
             <button className={styles.openPanelBtn} onClick={addNewTable}>
                 <img src="/public/closePanelIcon.svg" alt="open panel"/>
             </button>
+            {/*<button className={styles.}>*/}
+
+            {/*</button>*/}
         </div>
     );
 }

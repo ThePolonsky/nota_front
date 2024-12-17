@@ -5,7 +5,7 @@ import {TabsContext} from '../../../context/tabs.context.js';
 import {UserContext} from '../../../context/user.context.js';
 import axios from 'axios';
 
-function NoteBody({ tab, tables, notebooks, notes, setTables, setNotebooks, setNotes }) {
+function NoteBody({tab, tables, notebooks, notes, setTables, setNotebooks, setNotes}) {
 
     const {userId} = useContext(UserContext);
 
@@ -63,7 +63,13 @@ function NoteBody({ tab, tables, notebooks, notes, setTables, setNotebooks, setN
             <div className={styles.noteBodyHeader}>
                 <input className={styles.noteTitle} id={'noteTitle'} value={noteTitle} onChange={handleChange}></input>
                 <div className={styles.noteInfo}>
-                    <span>Last update</span>
+                    <div className={styles.noteInfoHead}>
+                        <span>Last update</span>
+                        {isSaved
+                            ? (<div className={styles.indicatorSaved}></div>)
+                            : (<div className={styles.indicatorNotSaved}></div>)
+                        }
+                    </div>
                     <span>{updatedAt.toLocaleString('en-US')}</span>
                 </div>
             </div>
