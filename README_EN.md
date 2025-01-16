@@ -32,7 +32,7 @@ Follow these steps to run the project locally:
   ```
 
 Features
-	•	Create, edit, and delete notes.
-	•	User-friendly interface for organizing entries.
-	•	Responsive design for different devices.
+	-	Create, edit, and delete notes.
+	-	User-friendly interface for organizing entries.
+	-	Responsive design for different devices.
 
