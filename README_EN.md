@@ -30,9 +30,7 @@ Follow these steps to run the project locally:
   ```bash
   npm run dev
   ```
-
-Features
-	- Create, edit, and delete notes.
-	- User-friendly interface for organizing entries.
-	- Responsive design for different devices.
-
+Features:
+- Create, edit, and delete notes.
+- User-friendly interface for organizing entries.
+- Responsive design for different devices.
